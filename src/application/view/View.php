@@ -12,18 +12,20 @@ class View {
 
 	private $timeView;
 	
-	public function __construct($loginView) {
+	public function __construct($loginView, $signupView) {
 		$this->loginView = $loginView;
+		$this->signupView = $signupView;
 		$this->timeView = new SwedishDateTimeView();
 	}
 	
 	public function getLoggedOutPage() {
 		$html = $this->getHeader(false);
 		$loginBox = $this->loginView->getLoginBox(); 
+		$signupLink = $this->signupView->getSignUpLink();
 
-		$html .= "<h2>Ej Inloggad</h2>
-				  	$loginBox
-				 ";
+    $html .= "$signupLink
+							<h2>Ej Inloggad</h2>
+							$loginBox";
 		$html .= $this->getFooter();
 
 		return new \common\view\Page("Laboration. Inte inloggad", $html);
@@ -41,6 +43,22 @@ class View {
 		$html .= $this->getFooter();
 
 		return new \common\view\Page("Laboration. Inloggad", $html);
+	}
+
+	/**
+	 * @return \common\view\Page
+	 */
+	public function getSignUpPage() {
+		$html = $this->getHeader(false);
+		$form = $this->signupView->getSignUpForm();
+		$backLink = "..."; // @TODO $this->loginView->loginLink(); ???
+
+		$html .= "$backLink
+							<h2>Ej Inloggad, Registrerar användare</h2>
+							$form";
+		$html .= $this->getFooter();
+
+		return new \common\view\Page("Registrering av ny användare", $html);
 	}
 	
 	private function getHeader($isLoggedIn) {
