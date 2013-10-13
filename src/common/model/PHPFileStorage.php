@@ -6,7 +6,7 @@ namespace common\model;
 class PHPFileStorage {
 
 	public function __construct($filePath) {
-		$this->filePath = $filePath;
+		$this->filePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
 
 		if (file_exists($this->filePath) == FALSE) {
 			file_put_contents($this->filePath, "<?php");
