@@ -3,81 +3,103 @@
 namespace signup\model;
 
 class CreateUser {
+	/**
+	 * @var string $username
+	 */
 	private $username;
-	private $password;
-	private $errors;
 
+	/**
+	 * @var string $password
+	 */
+	private $password;
+
+	/**
+	 * @var array $errors
+	 */
+	private $errors = array();
+
+	/**
+	 * @param string $username
+	 * @param string $password
+	 * @param string $confirmation
+	 */
 	public function __construct($username, $password, $confirmation) {
-		$this->username = $this->validateUsername($username);
-		$this->password = $this->validatePassword($password);
+		$this->username = $this->validate("createUsername", "username", $username);
+		$this->password = $this->validate("createPassword", "password", $password);
 		$this->validateConfirmation($password, $confirmation);
 	}
 
+	/**
+	 * @return \login\model\UserCredentials Newly created user
+	 */
 	public function getUser() {
 		return \login\model\UserCredentials::create($this->username, $this->password);
 	}
 
+	/**
+	 * @return boolean True if there is no errors
+	 */
 	public function success() {
 		return empty($this->errors);
 	}
 
+	/**
+	 * @return boolean True if invalid username
+	 */
 	public function invalidUsername() {
 		return in_array("username", $this->errors);
 	}
 
+	/**
+	 * @return boolean True if invalid password
+	 */
 	public function invalidPassword() {
 		return in_array("password", $this->errors);
 	}
 
+	/**
+	 * @return boolean True if invalid password confirmation
+	 */
 	public function invalidConfirmation() {
 		return in_array("confirmation", $this->errors);
 	}
 
+	/**
+	 * @param string $password
+	 * @param string $confirmation
+	 */
 	private function validateConfirmation($password, $confirmation) {
 		if ($password != $confirmation)
 			$this->errors[] = "confirmation";
 	}
 
-	private function validateUsername($username) {
-		try {
-			$username = new \login\model\UserName($username);
-			return $username->__toString();
-		} catch (\Exception $e) {
-			$this->errors[] = "username";
-		}
-	}
-
-	private function validatePassword($password) {
-		try {
-			$password = \login\model\Password::fromCleartext($password);
-			return $password->__toString();
-		} catch (\Exception $e) {
-			$this->errors[] = "password";
-		}
-	}
-
-	/* @TODO
-
-		validate(function ($username) {
-			return new \login\model\UserName($username);
-		}, "username", $username);
-		OR
-		validate('username', 'username', $username);
-
+	/**
+	 * @param function $fn
+	 * @param string $type
+	 * @param string $value
+	 * @return string Validated value
+	 */
 	private function validate($fn, $type, $value) {
 		try {
-			return $fn($value)->__toString();
-		} catch (\Exception) {
+			return $this->$fn($value)->__toString();
+		} catch (\Exception $e) {
 			$this->errors[] = $type;
 		}
 	}
 
-	private function username($username) {
+	/**
+	 * @param string $username
+	 * @return \login\model\UserName
+	 */
+	private function createUsername($username) {
 		return new \login\model\UserName($username);
 	}
 
-	private function password($password) {
+	/**
+	 * @param string $password
+	 * @return \login\model\Password
+	 */
+	private function createPassword($password) {
 		return \login\model\Password::fromCleartext($password);
 	}
-	 */
 }
