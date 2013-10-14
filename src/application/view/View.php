@@ -50,8 +50,8 @@ class View {
 	 */
 	public function getSignUpPage() {
 		$html = $this->getHeader(false);
+		$backLink = "<a href='/'>Tillbaka</a>"; // @TODO $this->loginView->loginLink(); ???
 		$form = $this->signupView->getSignUpForm();
-		$backLink = "..."; // @TODO $this->loginView->loginLink(); ???
 
 		$html .= "$backLink
 							<h2>Ej Inloggad, Registrerar användare</h2>
@@ -62,7 +62,7 @@ class View {
 	}
 	
 	private function getHeader($isLoggedIn) {
-		$ret =  "<h1>Laborationskod xx222aa</h1>";
+		$ret =  "<h1>Laborationskod cn222gc</h1>";
 		return $ret;
 		
 	}
@@ -71,7 +71,4 @@ class View {
 		$timeString = $this->timeView->getTimeString(time());
 		return "<p>$timeString<p>";
 	}
-	
-	
-	
 }

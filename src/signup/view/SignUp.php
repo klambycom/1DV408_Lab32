@@ -12,9 +12,40 @@ class SignUp {
 	private static $SIGNUP = "signup";
 
 	/**
-	 * @var string $CONFIRM
+	 * @var string $PASSWORDAGAIN
 	 */
-	private static $CONFIRM = "confirmsignup";
+	private static $PASSWORDAGAIN = "password_again";
+
+	/**
+	 * @var string $PASSWORD
+	 */
+	private static $PASSWORD = "password";
+
+	/**
+	 * @var string $NAME
+	 */
+	private static $NAME = "username";
+
+	/**
+	 * @return string
+	 */
+	public function getUsername() {
+		return $_POST[self::$NAME];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPassword() {
+		return $_POST[self::$PASSWORD];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getConfirmedPassword() {
+		return $_POST[self::$PASSWORDAGAIN];
+	}
 
 	/**
 	 * @return boolean True if user is showing sign up page.
@@ -28,7 +59,7 @@ class SignUp {
 	 * @TODO: Should maybe be a post
 	 */
 	public function isConfirmingSigningUp() {
-		return isset($_GET[self::$CONFIRM]);
+		return isset($_GET[self::$SIGNUP]) && !empty($_POST);
 	}
 
 	/**
@@ -43,6 +74,18 @@ class SignUp {
 	 * @TODO
 	 */
 	public function getSignUpForm() {
-		return "todo";
+		return "
+			<form action='?" . self::$SIGNUP . "' method='post'>
+				<fieldset>
+					<legend>Registrera ny användare - Skriv in användarnamn och lösenord</legend>
+					<label for='" . self::$NAME . "'>Namn:</label>
+					<input type='text' size='20' name='" . self::$NAME . "' /><br/>
+					<label for='PasswordID'>Lösenord:</label>
+					<input type='password' size='20' name='" . self::$PASSWORD . "' /><br/>
+					<label for='PasswordID'>Repetera Lösenord:</label>
+					<input type='password' size='20' name='" . self::$PASSWORDAGAIN . "' /><br/>
+					<input type='submit' value='Registrera' />
+				</fieldset>
+			</form>";
 	}
 }

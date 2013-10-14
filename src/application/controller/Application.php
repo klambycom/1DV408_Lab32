@@ -35,6 +35,9 @@ class Application {
 		if ($this->loginController->isLoggedIn()) {
 			$loggedInUserCredentials = $this->loginController->getLoggedInUser();
 			return $this->view->getLoggedInPage($loggedInUserCredentials);	
+		} else if ($this->signupView->isConfirmingSigningUp()) {
+			echo "Try att registrera user";
+			die();
 		} else if ($this->signupView->isSigningUp()) {
       return $this->view->getSignUpPage();
 		} else {
