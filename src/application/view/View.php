@@ -18,9 +18,9 @@ class View {
 		$this->timeView = new SwedishDateTimeView();
 	}
 	
-	public function getLoggedOutPage() {
+	public function getLoggedOutPage($user = "") {
 		$html = $this->getHeader(false);
-		$loginBox = $this->loginView->getLoginBox(); 
+		$loginBox = $this->loginView->getLoginBox($user); 
 		$signupLink = $this->signupView->getSignUpLink();
 
     $html .= "$signupLink

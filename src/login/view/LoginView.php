@@ -16,10 +16,10 @@ class LoginView implements \login\model\LoginObserver {
 	private $message = "";
 	
 	
-	public function getLoginBox() {
-		
-		 
-		$user = $this->getUserName();
+	public function getLoginBox($user = "") {
+		if (empty($user))
+			$user = $this->getUserName();
+
 		$checked = $this->userWantsToBeRemembered() ? "checked=checked" : "";
 		
 		$html = "

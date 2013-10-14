@@ -27,6 +27,11 @@ class SignUp {
 	private static $NAME = "username";
 
 	/**
+	 * @var array $messages
+	 */
+	private $messages = array();
+
+	/**
 	 * @return string
 	 */
 	public function getUsername() {
@@ -43,7 +48,7 @@ class SignUp {
 	/**
 	 * @return string
 	 */
-	public function getConfirmedPassword() {
+	public function getConfirmation() {
 		return $_POST[self::$PASSWORDAGAIN];
 	}
 
@@ -56,7 +61,7 @@ class SignUp {
 
 	/**
 	 * @return boolean True if user is confirming sign up form.
-	 * @TODO: Should maybe be a post
+	 * @TODO: Change name!!!
 	 */
 	public function isConfirmingSigningUp() {
 		return isset($_GET[self::$SIGNUP]) && !empty($_POST);
@@ -70,13 +75,52 @@ class SignUp {
 	}
 
 	/**
+	 * Message for invalid username
+	 */
+	public function invalidUsername() {
+		$this->messages[] = "Användarnamnet har för få tecken. Minst 3 tecken.";
+	}
+
+	/**
+	 * Message for invalid password
+	 */
+	public function invalidPassword() {
+		$this->messages[] = "Lösenorden har för få tecken. Minst 6 tecken.";
+	}
+
+	/**
+	 * Message for when password and confirmation don't match
+	 */
+	public function invalidConfirmation() {
+		$this->messages[] = "Lösenorden matchar inte.";
+	}
+
+	/**
+	 * Message for when the username is already taken
+	 */
+	public function usernameAlreadyTaken() {
+		$this->messages[] = "Användarnamnet är redan upptaget";
+	}
+
+	/**
+	 * @return string Error messages
+	 */
+	public function getMessages() {
+		if (empty($this->messages)) {
+			return "";
+		} else {
+			return "<p>" . implode('<br/>', $this->messages) . "</p>";
+		}
+	}
+
+	/**
 	 * @return html
-	 * @TODO
 	 */
 	public function getSignUpForm() {
 		return "
 			<form action='?" . self::$SIGNUP . "' method='post'>
 				<fieldset>
+				" . $this->getMessages() . "
 					<legend>Registrera ny användare - Skriv in användarnamn och lösenord</legend>
 					<label for='" . self::$NAME . "'>Namn:</label>
 					<input type='text' size='20' name='" . self::$NAME . "' /><br/>
