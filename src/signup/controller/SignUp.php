@@ -27,9 +27,12 @@ class SignUp {
 
 		if ($user->success()) {
 			// User created, save it!
+			// @TODO
 		} else {
 			if ($user->invalidUsername())
 				$this->view->invalidUsername();
+			if ($user->tagsInUsername())
+				$this->view->tagsInUsername();
 			if ($user->invalidPassword())
 				$this->view->invalidPassword();
 			if ($user->invalidConfirmation())

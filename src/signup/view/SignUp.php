@@ -103,6 +103,13 @@ class SignUp {
 	}
 
 	/**
+	 * Message for when there is tags in the username
+	 */
+	public function tagsInUsername() {
+		$this->messages[] = "Användarnamnet innehållet ogiltiga tecken.";
+	}
+
+	/**
 	 * @return string Error messages
 	 */
 	public function getMessages() {
@@ -124,7 +131,7 @@ class SignUp {
 					<legend>Registrera ny användare - Skriv in användarnamn och lösenord</legend>
 					<label for='username'>Namn:</label>
 					<input type='text' size='20' name='" . self::$NAME . "' id='username'
-								 value='" . $this->getUsername() . "'	/>
+								 value='" . \common\Filter::sanitizeString($this->getUsername()) . "'	/>
 					<br/>
 					<label for='pass'>Lösenord:</label>
 					<input type='password' size='20' name='" . self::$PASSWORD . "' id='pass'/>

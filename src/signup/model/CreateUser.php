@@ -24,8 +24,8 @@ class CreateUser {
 	 * @param string $confirmation
 	 */
 	public function __construct($username, $password, $confirmation) {
-		$this->username = $this->validate("createUsername", "username", $username);
-		$this->password = $this->validate("createPassword", "password", $password);
+		$this->username = $this->validateUsername($username);
+		$this->password = $this->validatePassword($password);
 		$this->validateConfirmation($password, $confirmation);
 	}
 
@@ -64,6 +64,10 @@ class CreateUser {
 		return in_array("confirmation", $this->errors);
 	}
 
+	public function tagsInUsername() {
+		return in_array("html", $this->errors);
+	}
+
 	/**
 	 * @param string $password
 	 * @param string $confirmation
@@ -74,32 +78,30 @@ class CreateUser {
 	}
 
 	/**
-	 * @param function $fn
-	 * @param string $type
-	 * @param string $value
-	 * @return string Validated value
-	 */
-	private function validate($fn, $type, $value) {
-		try {
-			return $this->$fn($value)->__toString();
-		} catch (\Exception $e) {
-			$this->errors[] = $type;
-		}
-	}
-
-	/**
 	 * @param string $username
 	 * @return \login\model\UserName
 	 */
-	private function createUsername($username) {
-		return new \login\model\UserName($username);
+	private function validateUsername($username) {
+		try {
+			return new \login\model\UserName($username);
+		} catch (\Exception $e) {
+			if (\Common\Filter::hasTags($username)) {
+				$this->errors[] = "html";
+			} else {
+				$this->errors[] = "username";
+			}
+		}
 	}
 
 	/**
 	 * @param string $password
 	 * @return \login\model\Password
 	 */
-	private function createPassword($password) {
-		return \login\model\Password::fromCleartext($password);
+	private function validatePassword($password) {
+		try {
+			return \login\model\Password::fromCleartext($password);
+		} catch (\Exception $e) {
+			$this->errors[] = "password";
+		}
 	}
 }
