@@ -122,12 +122,16 @@ class SignUp {
 				<fieldset>
 				" . $this->getMessages() . "
 					<legend>Registrera ny användare - Skriv in användarnamn och lösenord</legend>
-					<label for='" . self::$NAME . "'>Namn:</label>
-					<input type='text' size='20' name='" . self::$NAME . "' /><br/>
-					<label for='PasswordID'>Lösenord:</label>
-					<input type='password' size='20' name='" . self::$PASSWORD . "' /><br/>
-					<label for='PasswordID'>Repetera Lösenord:</label>
-					<input type='password' size='20' name='" . self::$PASSWORDAGAIN . "' /><br/>
+					<label for='username'>Namn:</label>
+					<input type='text' size='20' name='" . self::$NAME . "' id='username'
+								 value='" . $this->getUsername() . "'	/>
+					<br/>
+					<label for='pass'>Lösenord:</label>
+					<input type='password' size='20' name='" . self::$PASSWORD . "' id='pass'/>
+					<br/>
+					<label for='pass2'>Repetera Lösenord:</label>
+					<input type='password' size='20' name='" . self::$PASSWORDAGAIN . "'
+								 id='pass2' /><br/>
 					<input type='submit' value='Registrera' />
 				</fieldset>
 			</form>";
