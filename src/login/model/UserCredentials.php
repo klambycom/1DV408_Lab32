@@ -41,17 +41,21 @@ class UserCredentials {
 		return new UserCredentials($userName, Password::emptyPassword(), $temporaryPassword);
 	}
 
-	
-    public static function fromString($string) {
-        $unencoded = urldecode($string);
-        $parts = explode("<>", $unencoded);
-        return new UserCredentials( new UserName($parts[0]), 
+
+	public static function fromString($string) {
+		$unencoded = urldecode($string);
+		$parts = explode("<>", $unencoded);
+		return new UserCredentials( new UserName($parts[0]), 
         							Password::fromEncryptedString($parts[1]), 
         							TemporaryPasswordServer::fromString($parts[2]));
-    }
+	}
 	
 	public function getUserName() {
 		return $this->userName;
+	}
+
+	public function getPassword() {
+		return $this->password;
 	}
 	
 	public function getTemporaryPassword() {

@@ -35,7 +35,7 @@ class SignUp {
 	 * @return string
 	 */
 	public function getUsername() {
-		return $_POST[self::$NAME];
+		return isset($_POST[self::$NAME]) ? $_POST[self::$NAME] : "";
 	}
 
 	/**
@@ -61,7 +61,6 @@ class SignUp {
 
 	/**
 	 * @return boolean True if user is confirming sign up form.
-	 * @TODO: Change name!!!
 	 */
 	public function isConfirmingSigningUp() {
 		return isset($_GET[self::$SIGNUP]) && !empty($_POST);

@@ -3,30 +3,21 @@
 namespace login\model;
 
 require_once("UserCredentials.php");
-require_once("UserList.php");
 require_once("LoginInfo.php");
 
 
 class LoginModel {
 	private static $loggedInUser = "LoginModel::loggedInUser";
 	
-	private $allUsers;
-	
-	
 	public function __construct() {
 		assert(isset($_SESSION));
-		
-		$this->allUsers = new UserList();
 	}
 	
 	public function doLogin($fromClient, $observer) {
-
 		try {
-			$validUser = $this->allUsers->findUser($fromClient);
+			$validUser = \common\model\UserDAL::find($fromClient);
 
 			$validUser->newTemporaryPassword();
-
-			$this->allUsers->update($validUser);
 
 			$this->setLoggedIn($validUser, $observer);
 

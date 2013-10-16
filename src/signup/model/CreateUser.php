@@ -2,6 +2,8 @@
 
 namespace signup\model;
 
+require_once("common/model/UserDAL.php");
+
 class CreateUser {
 	/**
 	 * @var string $username
@@ -27,6 +29,7 @@ class CreateUser {
 		$this->username = $this->validateUsername($username);
 		$this->password = $this->validatePassword($password);
 		$this->validateConfirmation($password, $confirmation);
+		$this->validateUniqueUsername($username);
 	}
 
 	/**
@@ -34,6 +37,13 @@ class CreateUser {
 	 */
 	public function getUser() {
 		return \login\model\UserCredentials::create($this->username, $this->password);
+	}
+
+	/**
+	 * Create user in database
+	 */
+	public function create() {
+		\common\model\UserDAL::create($this->getUser());
 	}
 
 	/**
@@ -64,8 +74,18 @@ class CreateUser {
 		return in_array("confirmation", $this->errors);
 	}
 
+	/**
+	 * @return boolean True if tags in username
+	 */
 	public function tagsInUsername() {
 		return in_array("html", $this->errors);
+	}
+
+	/**
+	 * @return boolean True if username is already taken
+	 */
+	public function usernameIsAlreadyTaken() {
+		return in_array("notunique", $this->errors);
 	}
 
 	/**
@@ -104,4 +124,16 @@ class CreateUser {
 			$this->errors[] = "password";
 		}
 	}
+
+	/**
+	 * Check that the username not exists in database
+	 */
+	private function validateUniqueUsername($username) {
+		$user = \login\model\UserCredentials::createFromClientData($username, "");
+		try {
+			\common\model\UserDAL::find($user);
+			$this->errors[] = "notunique";
+		} catch (\Exception $e) {
+		}
+	}	
 }

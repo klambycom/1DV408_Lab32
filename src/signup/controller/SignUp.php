@@ -26,9 +26,10 @@ class SignUp {
 																				 $this->view->getConfirmation());
 
 		if ($user->success()) {
-			// User created, save it!
-			// @TODO
+			$user->create();
 		} else {
+			if ($user->usernameIsAlreadyTaken())
+				$this->view->usernameAlreadyTaken();
 			if ($user->invalidUsername())
 				$this->view->invalidUsername();
 			if ($user->tagsInUsername())

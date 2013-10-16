@@ -50,7 +50,7 @@ class View {
 	 */
 	public function getSignUpPage() {
 		$html = $this->getHeader(false);
-		$backLink = "<a href='/'>Tillbaka</a>"; // @TODO $this->loginView->loginLink(); ???
+		$backLink = "<a href='/'>Tillbaka</a>";
 		$form = $this->signupView->getSignUpForm();
 
 		$html .= "$backLink
